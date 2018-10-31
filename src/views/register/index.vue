@@ -1,28 +1,37 @@
 <template>
-  <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+  <div class="register-container">
+    <el-form class="register-form" autoComplete="on" :model="registerForm" :rules="registerRules" ref="registerForm" label-position="left">
       <h3 class="title">商户管理后台</h3>
       <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
+        <span class="svg-container svg-container_register">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入手机号" />
+        <el-input name="username" type="text" v-model="registerForm.username" autoComplete="on" placeholder="请输入手机号" />
       </el-form-item>
-      <!-- <el-form-item prop="password">
+      <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
+        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="registerForm.password" autoComplete="on"
           placeholder="请输入密码"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
-      </el-form-item> -->
+      </el-form-item>
+      <el-form-item prop="username">
+        <span class="svg-container svg-container_register">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input name="referrerId" type="text" v-model="registerForm.referrerId" autoComplete="on" placeholder="请输入推荐人手机号" />
+      </el-form-item>
+      
       <div><get-code :phone="phoneNumber" ref="code"></get-code></div>
       
       <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          登录
+        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleRegister">
+          注册
         </el-button>
       </el-form-item>
+      <p style="color:#fff;text-align:right">已有账号？去 <router-link to="register">登录</router-link></p>
+      
     </el-form>
   </div>
 </template>
@@ -31,33 +40,42 @@
 import { validatePhoneNumber, validateVerify } from '@/utils/validate'
 import GetCode from '@/components/GetCode'
 export default {
-  name: 'login',
+  name: 'register',
   components: { GetCode },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validatePhoneNumber(value)) {
         callback(new Error('请输入正确手机号'))
       } else {
-        this.phoneNumber = this.loginForm.username
+        this.phoneNumber = this.registerForm.username
         callback()
       }
     }
-    // const validatePass = (rule, value, callback) => {
-    //   if (value.length < 6) {
-    //     callback(new Error('密码不能小于6位'))
-    //   } else {
-    //     callback()
+    // const validateReferrerId = (rule, value, callback) => {
+    //   if (!validatePhoneNumber(value)) {
+    //     callback(new Error('请输入正确手机号'))
     //   }
     // }
+    const validatePass = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('密码不能小于6位'))
+      } else {
+        callback()
+      }
+    }
     return {
-      loginForm: {
+      registerForm: {
         username: '',
+        password: '',
+        referrerId: '',
         verifyCode: ''
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }]
+      registerRules: {
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
+      pwdType: 'password',
       verify: false,
       phoneNumber: ''
     }
@@ -79,12 +97,15 @@ export default {
         this.pwdType = 'password'
       }
     },
-    handleLogin() {
-      this.loginForm.verifyCode = this.$refs.code.code
-      this.$refs.loginForm.validate(valid => {
+    handleRegister() {
+      if (this.verify) {
+        // 获取验证码
+        this.registerForm.verifyCode = this.$refs.code.code
+      }
+      this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('Login', this.loginForm).then(() => {
+          this.$store.dispatch('Register', this.registerForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
           }).catch(() => {
@@ -105,7 +126,7 @@ $bg:#2d3a4b;
 $light_gray:#eee;
 
 /* reset element-ui css */
-.login-container {
+.register-container {
   .el-input {
     display: inline-block;
     height: 47px;
@@ -138,12 +159,12 @@ $light_gray:#eee;
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
-.login-container {
+.register-container {
   position: fixed;
   height: 100%;
   width: 100%;
   background-color: $bg;
-  .login-form {
+  .register-form {
     position: absolute;
     left: 0;
     right: 0;
@@ -167,7 +188,7 @@ $light_gray:#eee;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
-    &_login {
+    &_register {
       font-size: 20px;
     }
   }

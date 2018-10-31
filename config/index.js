@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {      
       '/api':{//此处并非一定和url一致。
-        target:'https://adminapi.cicadafitness.net', 
+        target:'https://sellerapi.dkdcm.cn', 
         changeOrigin:true,//允许跨域 
         pathRewrite:{ '^/api': '' } 
       } 

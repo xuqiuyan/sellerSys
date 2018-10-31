@@ -1,29 +1,30 @@
 import request from '@/utils/request'
 
-// export function login(mobile, password, verifyCode) {
-//   return request({
-//     url: '/login',
-//     method: 'post',
-//     data: {
-//       mobile,
-//       password,
-//       verifyCode
-//     }
-//   })
-// }
-export function login(mobile, password) {
+export function register(mobile, password, referrerId, verifyCode) {
+  return request({
+    url: '/register',
+    method: 'post',
+    data: {
+      mobile,
+      password,
+      referrerId,
+      verifyCode
+    }
+  })
+}
+export function login(mobile, verifyCode) {
   return request({
     url: '/login',
     method: 'post',
     data: {
       mobile,
-      password
+      verifyCode
     }
   })
 }
 export function getInfo() {
   return request({
-    url: '/administrators/roles',
+    url: '/sellers/sellerType',
     method: 'get'
   })
 }

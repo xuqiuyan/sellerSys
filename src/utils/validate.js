@@ -54,7 +54,7 @@ export function validateVerify() {
 /* 获取验证码*/
 export function validateVerifyCode(str) {
   return request({
-    url: '/login/sendverifycode?mobile=' + str,
+    url: '/login/verifycode?mobile=' + str,
     method: 'get'
   })
 }

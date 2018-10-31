@@ -6,7 +6,8 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    sellerType: 0
   },
 
   mutations: {
@@ -21,6 +22,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_SELLERTYPE: (state, sellerType) => {
+      state.sellerType = sellerType
     }
   },
 
@@ -29,16 +33,11 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(res => {
+        login(username, userInfo.verifyCode).then(res => {
           if (res.data.code === 0) {
             const data = res.data.data
             setToken(data.token)
             commit('SET_TOKEN', data.token)
-            // if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            //   commit('SET_ROLES', data.roles)
-            // } else {
-            //   reject('getInfo: roles must be a non-null array !')
-            // }
             resolve()
           } else {
             Message({
@@ -57,9 +56,9 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
-          const roles = response.data.data
-          if (roles && roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', roles)
+          const sellerType = response.data.data
+          if (sellerType) {
+            commit('SET_SELLERTYPE', sellerType)
           } else {
             reject('getInfo: roles must be a non-null array !')
           }

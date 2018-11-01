@@ -1,6 +1,6 @@
 import request from '@/utils/request'
-
-export function orders(referrerId, sellerType) {
+// 创建订单
+export function createOrders(referrerId, sellerType) {
   return request({
     url: '/orders',
     method: 'post',
@@ -10,4 +10,10 @@ export function orders(referrerId, sellerType) {
     }
   })
 }
-
+// 获取订单
+export function getOrders() {
+  return request({
+    url: '/orders',
+    method: 'get'
+  })
+}

@@ -9,7 +9,7 @@
         <el-input name="referrerId" type="text" v-model="orderForm.referrerId" autoComplete="on" placeholder="请输入推荐人手机号" />
       </el-form-item>
       <el-form-item>
-        <el-select v-model="value" placeholder="请选择" style="width:100%">
+        <el-select v-model="orderForm.sellerType" placeholder="请选择" style="width:100%">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -19,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleOrder">
+        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleCreateOrder">
           加入
         </el-button>
       </el-form-item>
@@ -29,7 +29,7 @@
 
 <script>
 import { validatePhoneNumber } from '@/utils/validate'
-import orders from '@/utils/orders'
+import { getOrders, createOrders } from '@/api/orders'
 export default {
   name: 'order',
   data() {
@@ -60,13 +60,21 @@ export default {
       value: ''
     }
   },
+  created() {
+    this.handelGetOrders()
+  },
   methods: {
-    handleOrder() {
+    handelGetOrders() {
+      getOrders().then(res => {
+        console.log(res.data)
+      })
+    },
+    handleCreateOrder() {
       this.$refs.orderForm.validate(valid => {
         if (valid) {
           this.loading = true
-          orders(this.orderForm.referrerId, this.orderForm.sellerType).then(response => {
-            console.log(response.data.data)
+          createOrders(this.orderForm.referrerId, this.orderForm.sellerType).then(response => {
+            console.log(response.data)
           })
         }
       })

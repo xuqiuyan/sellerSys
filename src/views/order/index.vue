@@ -1,29 +1,34 @@
 <template>
   <div class="order-container">
-    <el-form class="order-form" autoComplete="on" :model="orderForm" :rules="orderRules" ref="orderForm" label-position="left">
-      <h3 class="title">请选择您加入我们的方式</h3>
-      <el-form-item>
-        <span class="svg-container svg-container_order">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="referrerId" type="text" v-model="orderForm.referrerId" autoComplete="on" placeholder="请输入推荐人手机号" />
-      </el-form-item>
-      <el-form-item>
-        <el-select v-model="orderForm.sellerType" placeholder="请选择" style="width:100%">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleCreateOrder">
-          加入
-        </el-button>
-      </el-form-item>
-    </el-form>
+    <div v-if="status === ''">
+      <el-form class="order-form" autoComplete="on" :model="orderForm" :rules="orderRules" ref="orderForm" label-position="left">
+        <h3 class="title">请选择您加入我们的方式</h3>
+        <el-form-item>
+          <span class="svg-container svg-container_order">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input name="referrerId" type="text" v-model="orderForm.referrerId" autoComplete="on" placeholder="请输入推荐人手机号" />
+        </el-form-item>
+        <el-form-item>
+          <el-select v-model="orderForm.sellerType" placeholder="请选择" style="width:100%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleCreateOrder">
+            加入
+          </el-button>
+        </el-form-item>
+      </el-form>      
+    </div>
+    <div v-else-if="status === '1'">
+      <!-- 提交流水号 -->
+    </div>
   </div>
 </template>
 
@@ -57,7 +62,8 @@ export default {
         value: '3',
         label: '加盟商'
       }],
-      value: ''
+      value: '',
+      status: ''
     }
   },
   created() {
@@ -66,7 +72,17 @@ export default {
   methods: {
     handelGetOrders() {
       getOrders().then(res => {
-        console.log(res.data)
+        /** status
+         * 1: 提交流水号
+         * 2：交易号已提交，等待管理员审核
+         * 3：流水号审核被拒绝，请再次提交流水号
+         * 4：流水号审核通过，请补充身份证照片，真实姓名，银行卡号，银行卡照片
+         * 5：信息已提交，等待管理员审核
+         * 6：信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片
+         * */
+        console.log(res.data.data)
+        this.status = res.data.data.status
+        console.log(this.status)
       })
     },
     handleCreateOrder() {

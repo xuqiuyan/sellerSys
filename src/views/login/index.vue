@@ -2,11 +2,11 @@
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">商户管理后台</h3>
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入手机号" />
+        <el-input name="mobile" type="text" v-model="loginForm.mobile" autoComplete="on" placeholder="请输入手机号" />
       </el-form-item>
       <!-- <el-form-item prop="password">
         <span class="svg-container">
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { validatePhoneNumber, validateVerify } from '@/utils/validate'
+import { validatePhoneNumber } from '@/utils/validate'
 import GetCode from '@/components/GetCode'
 export default {
   name: 'login',
@@ -38,7 +38,7 @@ export default {
       if (!validatePhoneNumber(value)) {
         callback(new Error('请输入正确手机号'))
       } else {
-        this.phoneNumber = this.loginForm.username
+        this.phoneNumber = this.loginForm.mobile
         callback()
       }
     }
@@ -51,27 +51,17 @@ export default {
     // }
     return {
       loginForm: {
-        username: '',
+        mobile: '',
         verifyCode: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }]
+        mobile: [{ required: true, trigger: 'blur', validator: validateUsername }]
       },
       loading: false,
-      verify: false,
       phoneNumber: ''
     }
   },
-  created() {
-    // this.ifVerify()
-  },
   methods: {
-    ifVerify() {
-      validateVerify().then(response => {
-        // 判断是否外网登录，是 则需要获取验证码验证
-        this.verify = response.data.data
-      })
-    },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''

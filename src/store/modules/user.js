@@ -31,9 +31,9 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      const mobile = userInfo.mobile.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.verifyCode).then(res => {
+        login(mobile, userInfo.verifyCode).then(res => {
           if (res.data.code === 0) {
             const data = res.data.data
             setToken(data.token)

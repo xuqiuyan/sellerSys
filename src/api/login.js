@@ -1,24 +1,13 @@
 import request from '@/utils/request'
 
-export function register(mobile, password, referrerId, verifyCode) {
-  return request({
-    url: '/register',
-    method: 'post',
-    data: {
-      mobile,
-      password,
-      referrerId,
-      verifyCode
-    }
-  })
-}
 export function login(mobile, verifyCode) {
+  console.log('verifyCode' + verifyCode)
   return request({
     url: '/login',
     method: 'post',
     data: {
-      mobile,
-      verifyCode
+      mobile: mobile,
+      verifyCode: verifyCode
     }
   })
 }

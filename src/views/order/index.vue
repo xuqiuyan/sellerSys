@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <div v-if="status === ''">
+    <div v-if="status === 0">
       <el-form class="order-form" autoComplete="on" :model="orderForm" :rules="orderRules" ref="orderForm" label-position="left">
         <h3 class="title">请选择您加入我们的方式</h3>
         <el-form-item>
@@ -26,8 +26,29 @@
         </el-form-item>
       </el-form>      
     </div>
-    <div v-else-if="status === '1'">
+    <div v-else-if="status === 1">
       <!-- 提交流水号 -->
+      <status1></status1>
+    </div>
+    <div v-else-if="status === 2">
+      <!-- 交易号已提交，等待管理员审核 -->
+      <status2></status2>
+    </div>
+    <div v-else-if="status === 3">
+      <!-- 流水号审核被拒绝，请再次提交流水号 -->
+      <status3></status3>
+    </div>
+    <div v-else-if="status === 4">
+      <!-- 流水号审核通过，请补充身份证照片，真实姓名，银行卡号，银行卡照片 -->
+      <status4></status4>
+    </div>
+    <div v-else-if="status === 5">
+      <!-- 信息已提交，等待管理员审核 -->
+      <status5></status5>
+    </div>
+    <div v-else-if="status === 6">
+      <!-- 信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片 -->
+      <status6></status6>
     </div>
   </div>
 </template>
@@ -35,8 +56,11 @@
 <script>
 import { validatePhoneNumber } from '@/utils/validate'
 import { getOrders, createOrders } from '@/api/orders'
+import Status1 from './components/status1'
+
 export default {
   name: 'order',
+  components: { Status1 },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validatePhoneNumber(value)) {
@@ -63,7 +87,7 @@ export default {
         label: '加盟商'
       }],
       value: '',
-      status: ''
+      status: 0
     }
   },
   created() {
@@ -80,9 +104,10 @@ export default {
          * 5：信息已提交，等待管理员审核
          * 6：信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片
          * */
-        console.log(res.data.data)
         this.status = res.data.data.status
-        console.log(this.status)
+        if (this.status === 1) {
+          console.log(this.status)
+        }
       })
     },
     handleCreateOrder() {

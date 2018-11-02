@@ -34,66 +34,56 @@
 </style>
 
 <script>
-import Bus from '@/api/bus'
 import COS from 'cos-js-sdk-v5'
 import getAuth from '@/api/getAuth'
-import getImgName from '@/api/getImgName'
+import Bus from '@/api/bus'
 import { mapMutations } from 'vuex'
 export default {
   name: 'UploadImg',
   data() {
     return {
       options: {
-        Bucket: 'static-1257000451',
+        Bucket: 'seller-1255515741',
         Region: 'ap-shanghai'
       },
       cos: '',
       file: '',
-      imgUrl: ''
+      imgUrl: '',
+      Key: ''
     }
   },
   created() {
-    this.cos = new COS({
-      getAuthorization: function(options, callback) {
-        getAuth().then(response => {
+    getAuth(this.authType).then(response => {
+      console.log(response)
+      this.cos = new COS({
+        getAuthorization: function(options, callback) {
           callback({
-            Authorization: response.data.data
+            Authorization: response.data.data.authorization
           })
-        }).catch(err => {
-          console.log(err)
-        })
-      }
-    })
-    Bus.$on('getCoverUrl', msg => {
-      this.imgUrl = this.imgHead = msg
+        }
+      })
+      this.Key = '/' + response.data.data.path
+    }).catch(err => {
+      console.log(err)
     })
   },
   methods: {
     ...mapMutations({
-      setUrl: 'SET_URL' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+      setUrl: 'SET_URL'
     }),
     uploadFile() {
-      getImgName().then(response => {
-        var type = ''
-        if (this.file.type === 'image/jpeg') {
-          type = '.jpg'
+      this.cos.sliceUploadFile({
+        Bucket: this.options.Bucket,
+        Region: this.options.Region,
+        Key: this.Key,
+        Body: this.file
+      }, (err, data) => {
+        if (data) {
+          this.imgUrl = 'https://' + data.Location
+          Bus.$emit(this.imgfoulder, this.imgUrl) // 发射 this.imgfoulder 事件，返回图片路径
         } else {
-          type = '.png'
+          this.msg = err
         }
-        var Key = this.imgfoulder + '/' + response.data.data + type
-        this.cos.sliceUploadFile({
-          Bucket: this.options.Bucket,
-          Region: this.options.Region,
-          Key: Key,
-          Body: this.file
-        }, (err, data) => {
-          if (data) {
-            this.imgUrl = 'https://' + data.Location
-            this.setUrl(this.imgfoulder, this.imgUrl)
-          } else {
-            this.msg = err
-          }
-        })
       })
     },
     selectImg(e) {
@@ -127,7 +117,8 @@ export default {
     }
   },
   props: {
-    imgfoulder: String
+    imgfoulder: String,
+    authType: String
   }
 }
 

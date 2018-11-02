@@ -17,3 +17,15 @@ export function getOrders() {
     method: 'get'
   })
 }
+// 提交流水号
+export function setOrders(orderId, transactionNo, url, referrerId, sellerId) {
+  return request({
+    url: '/orders/evidence?referrerId=' + referrerId + '&sellerId=' + sellerId,
+    method: 'post',
+    data: {
+      orderId: orderId,
+      transactionNo: transactionNo,
+      photoUrl: url
+    }
+  })
+}

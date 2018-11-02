@@ -15,7 +15,8 @@ const activity = {
       activityRewardUrl8: '',
       activityRewardUrl9: '',
       activityRewardUrl10: '',
-      activityRewardUrl11: ''
+      activityRewardUrl11: '',
+      transactionNoUrl: ''
     }
   },
   mutations: {

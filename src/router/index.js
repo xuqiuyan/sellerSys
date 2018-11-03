@@ -48,19 +48,7 @@ export const asyncRouterMap = [
     path: '/order',
     component: () => import('@/views/order/index'),
     name: 'order',
-    sellerType: '1',
-    children: [
-      {
-        path: 'components/status1',
-        name: 'status1',
-        component: () => import('@/views/order/components/status1')
-      },
-      {
-        path: 'components/status2',
-        name: 'status2',
-        component: () => import('@/views/order/components/status2')
-      }
-    ]
+    sellerType: '1'
   },
   {
     path: '/activity',

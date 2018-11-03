@@ -29,3 +29,17 @@ export function setOrders(orderId, transactionNo, url, referrerId, sellerId) {
     }
   })
 }
+// 提交个人信息
+export function setPersonalInfo(realName, idCardNumber, idCardUrl, bankCardNumber, bankCardUrl) {
+  return request({
+    url: 'sellers/profile',
+    method: 'put',
+    data: {
+      realName,
+      idCardNumber,
+      idCardUrl,
+      bankCardNumber,
+      bankCardUrl
+    }
+  })
+}

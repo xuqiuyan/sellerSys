@@ -32,7 +32,7 @@
     </div>
     <div v-else-if="status === 2">
       <!-- 交易号已提交，等待管理员审核 -->
-      <status2></status2>
+      <p>流水号提交成功，等待管理员审核</p>
     </div>
     <div v-else-if="status === 3">
       <!-- 流水号审核被拒绝，请再次提交流水号 -->
@@ -40,15 +40,15 @@
     </div>
     <div v-else-if="status === 4">
       <!-- 流水号审核通过，请补充身份证照片，真实姓名，银行卡号，银行卡照片 -->
-      <status4></status4>
+      <status4 :status="'4'"></status4>
     </div>
     <div v-else-if="status === 5">
       <!-- 信息已提交，等待管理员审核 -->
-      <status5></status5>
+      <p>您的信息提交成功，管理员审核中</p>
     </div>
     <div v-else-if="status === 6">
       <!-- 信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片 -->
-      <status6></status6>
+      <status4 :status="'6'"></status4>
     </div>
   </div>
 </template>
@@ -57,10 +57,10 @@
 import { validatePhoneNumber } from '@/utils/validate'
 import { getOrders, createOrders } from '@/api/orders'
 import Status1 from './components/status1'
-import Status2 from './components/status2'
+import Status4 from './components/status4'
 export default {
   name: 'order',
-  components: { Status1, Status2 },
+  components: { Status1, Status4 },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validatePhoneNumber(value)) {

@@ -48,87 +48,100 @@ export const asyncRouterMap = [
     path: '/order',
     component: () => import('@/views/order/index'),
     name: 'order',
-    sellerType: '1'
+    sellerType: [1]
   },
   {
     path: '/activity',
     component: Layout,
-    meta: { title: '活动管理', icon: 'activity', sellerType: '2' },
+    meta: { title: '活动管理', icon: 'activity', sellerType: [2] },
     children: [
       {
         path: 'activityList',
         name: 'activityList',
         component: () => import('@/views/activity/activityList'),
-        meta: { title: '活动列表', sellerType: '2' }
+        meta: { title: '活动列表', sellerType: [2] }
       },
       {
         path: 'nameList',
         name: 'nameList',
         component: () => import('@/views/activity/nameList'),
-        meta: { title: '获奖名单', sellerType: '2' }
+        meta: { title: '获奖名单', sellerType: [2] }
       }
     ]
   },
   {
     path: '/setReward',
     component: Layout,
-    meta: { title: '奖项设置', icon: 'activity', sellerType: '2' },
+    meta: { title: '奖项设置', icon: 'activity', sellerType: [2] },
     children: [
       {
         path: 'index',
         name: 'setReward',
         component: () => import('@/views/setReward/index'),
-        meta: { title: '奖项设置', sellerType: '2' }
+        meta: { title: '奖项设置', sellerType: [2] }
       }
     ]
   },
   {
     path: '/verification',
     component: Layout,
-    meta: { title: '核销管理', icon: 'activity', sellerType: '2' },
+    meta: { title: '核销管理', icon: 'activity', sellerType: [2] },
     children: [
       {
         path: 'verificationList',
         name: 'verificationList',
         component: () => import('@/views/verification/verificationList'),
-        meta: { title: '核销记录', sellerType: '2' }
+        meta: { title: '核销记录', sellerType: [2] }
       },
       {
         path: 'redPacketList',
         name: 'redPacketList',
         component: () => import('@/views/verification/redPacketList'),
-        meta: { title: '红包记录', sellerType: '2' }
+        meta: { title: '红包记录', sellerType: [2] }
       },
       {
         path: 'giftsList',
         name: 'giftsList',
         component: () => import('@/views/verification/giftsList'),
-        meta: { title: '礼品记录', sellerType: '2' }
+        meta: { title: '礼品记录', sellerType: [2] }
       }
     ]
   },
   {
     path: '/distribution',
     component: Layout,
-    meta: { title: '分销管理', icon: 'activity', sellerType: '2' },
+    meta: { title: '分销管理', icon: 'activity', sellerType: [2] },
     children: [
       {
         path: 'salesManList',
         name: 'salesManList',
         component: () => import('@/views/distribution/salesManList'),
-        meta: { title: '推广员管理', sellerType: '2' }
+        meta: { title: '推广员管理', sellerType: [2] }
       },
       {
         path: 'channelsList',
         name: 'channelsList',
         component: () => import('@/views/distribution/channelsList'),
-        meta: { title: '渠道管理', sellerType: '2' }
+        meta: { title: '渠道管理', sellerType: [2] }
       },
       {
         path: 'setDistribution',
         name: 'setDistribution',
         component: () => import('@/views/distribution/setDistribution'),
-        meta: { title: '分销设置', sellerType: '2' }
+        meta: { title: '分销设置', sellerType: [2] }
+      }
+    ]
+  },
+  {
+    path: '/bonuses',
+    component: Layout,
+    meta: { title: '我的分润', icon: 'activity' },
+    children: [
+      {
+        path: 'index',
+        name: 'bonuses',
+        component: () => import('@/views/bonuses/index'),
+        meta: { title: '我的分润' }
       }
     ]
   }

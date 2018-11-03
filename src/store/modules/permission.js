@@ -7,7 +7,9 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  */
 function hasPermission(sellerType, route) {
   if (route.meta && route.meta.sellerType) {
-    return sellerType === route.meta.sellerType
+    const ret = route.meta.sellerType.indexOf(sellerType) >= 0
+    console.log(route.meta.sellerType, sellerType, ret)
+    return ret
   } else {
     return true
   }

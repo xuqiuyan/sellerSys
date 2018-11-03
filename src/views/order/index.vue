@@ -28,15 +28,18 @@
     </div>
     <div v-else-if="status === 1">
       <!-- 提交流水号 -->
-      <status1 :orderId="orderId" :referrerId="referrerId" :sellerId="sellerId"  :status="'1'"></status1>
+      <status1  :status="'1'"></status1>
     </div>
-    <div v-else-if="status === 2">
+    <div v-else-if="status === 2" >
       <!-- 交易号已提交，等待管理员审核 -->
-      <p>流水号提交成功，等待管理员审核</p>
+      <div class="order-form" align="center">
+        <img src="@/imgs/check.png" alt="">
+        <p style="color:#fff;font-size:18px;">流水号提交成功，等待管理员审核</p>
+      </div>      
     </div>
     <div v-else-if="status === 3">
       <!-- 流水号审核被拒绝，请再次提交流水号 -->
-      <status1 :orderId="orderId" :referrerId="referrerId" :sellerId="sellerId" :status="'3'" ></status1>
+      <status1  :status="'3'" ></status1>
     </div>
     <div v-else-if="status === 4">
       <!-- 流水号审核通过，请补充身份证照片，真实姓名，银行卡号，银行卡照片 -->
@@ -44,7 +47,10 @@
     </div>
     <div v-else-if="status === 5">
       <!-- 信息已提交，等待管理员审核 -->
-      <p>您的信息提交成功，管理员审核中</p>
+      <div class="order-form" align="center">
+        <img src="@/imgs/check.png" alt="">
+        <p style="color:#fff;font-size:18px;">您的信息提交成功，管理员审核中</p>
+      </div> 
     </div>
     <div v-else-if="status === 6">
       <!-- 信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片 -->
@@ -54,6 +60,7 @@
 </template>
 
 <script>
+import Bus from '@/api/bus'
 import { validatePhoneNumber } from '@/utils/validate'
 import { getOrders, createOrders } from '@/api/orders'
 import Status1 from './components/status1'
@@ -88,13 +95,19 @@ export default {
       }],
       value: '',
       status: 0,
-      orderId: '',
-      referrerId: '',
-      sellerId: ''
+      referrerId: ''
     }
   },
   created() {
     this.handelGetOrders()
+    Bus.$on('status1', msg => {
+      // 提交流水号完成
+      this.handelGetOrders()
+    })
+    Bus.$on('status4', msg => {
+      // 提交基本信息完成
+      this.handelGetOrders()
+    })
   },
   methods: {
     handelGetOrders() {
@@ -108,9 +121,10 @@ export default {
          * 6：信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片
          * */
         this.status = res.data.data.status // 获取状态
-        this.orderId = res.data.data.id // 订单ID
         this.referrerId = res.data.data.referrerId
-        this.sellerId = res.data.data.sellerId
+        if (this.status === 7) {
+          this.$router.push({ path: '/' })
+        }
       })
     },
     handleCreateOrder() {
@@ -118,7 +132,6 @@ export default {
         if (valid) {
           this.loading = true
           createOrders(this.orderForm.referrerId, this.orderForm.sellerType).then(response => {
-            console.log(response.data)
           })
         }
       })

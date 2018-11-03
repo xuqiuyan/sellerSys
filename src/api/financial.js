@@ -50,7 +50,7 @@ export function withdrawReject(id, msg) {
 // 提成列表
 export function fetchBonusesList(listQuery) {
   return request({
-    url: '/bonuses?start=' + (listQuery.page - 1) * listQuery.limit + '&length=' + listQuery.limit + '&approvalStatus=' + listQuery.approvalStatus,
+    url: '/bonuses?start=' + (listQuery.page - 1) * listQuery.limit + '&length=' + listQuery.limit,
     method: 'get'
   })
 }

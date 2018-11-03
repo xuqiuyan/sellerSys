@@ -26,14 +26,15 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.sellerType === 0) {
         store.dispatch('GetInfo').then(res => { // 拉取用户权限信息
-          const sellerType = res.data.data
-          store.dispatch('GenerateRoutes', sellerType).then(() => {
+          const sellerTypes = res.data.data
+          store.dispatch('GenerateRoutes', sellerTypes).then(() => {
+            console.log(store.getters.addRouters)
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            if (store.getters.sellerType === 1) {
-              next('/order')
-            } else {
-              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-            }
+            // if (store.getters.sellerType === 1) {
+            //   next('/order')
+            // } else {
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+            // }
           })
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {

@@ -28,7 +28,7 @@
 <script>
 import Bus from '@/api/bus'
 import UploadImg from '@/components/uploadFiles/UploadImg'
-import { setOrders } from '@/api/orders'
+import { getOrders, setOrders } from '@/api/orders'
 export default {
   name: 'Status1',
   components: { UploadImg },
@@ -38,6 +38,7 @@ export default {
         transactionNo: '',
         photoUrl: ''
       },
+      status: null,
       loading: false,
       status1Info: '您正在申请成为加盟商/推广员',
       status3Info: '您的申请被拒绝，请重新提交流水号'
@@ -50,10 +51,24 @@ export default {
     })
   },
   methods: {
+    handelGetOrders() {
+      getOrders().then(res => {
+        /** status
+             * 1: 提交流水号
+             * 2：交易号已提交，等待管理员审核
+             * 3：流水号审核被拒绝，请再次提交流水号
+             * 4：流水号审核通过，请补充身份证照片，真实姓名，银行卡号，银行卡照片
+             * 5：信息已提交，等待管理员审核
+             * 6：信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片
+             * */
+        this.status = res.data.data.status // 获取状态
+      })
+    },
     handleSubmit() {
       this.loading = true
       setOrders(this.orderId, this.orderForm.transactionNo, this.orderForm.photoUrl, this.referrerId, this.sellerId).then(res => {
         this.loading = false
+        Bus.$emit('status1', res.data.code)
       })
     }
   },

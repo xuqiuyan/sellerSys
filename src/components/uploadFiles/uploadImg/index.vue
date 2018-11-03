@@ -54,7 +54,6 @@ export default {
   },
   created() {
     getAuth(this.authType).then(response => {
-      console.log(response)
       this.cos = new COS({
         getAuthorization: function(options, callback) {
           callback({

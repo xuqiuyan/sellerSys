@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-form class="order-form"  label-width="80px" label-color="#fff"  ref="orderForm" label-position="left">
-            <div v-if=" status === '4'">
+        <el-form class="order-form"  label-width="100px" label-color="#fff"  ref="orderForm" label-position="left">
+            <div v-if=" status === 4">
                 <p class="title">{{status4Info}}</p>
             </div>
-            <div v-else-if=" status === '6'">
+            <div v-else-if=" status === 6">
                 <p class="title">{{status6Info}}</p>
             </div>
             <p class="title">请完善您的相关信息</p>
@@ -51,6 +51,7 @@ export default {
         bankCardNumber: '',
         bankCardUrl: ''
       },
+      status: null,
       loading: false,
       status4Info: '请您补充以下信息',
       status6Info: '您的申请被拒绝，请重新提交您的相关信息'
@@ -79,15 +80,13 @@ export default {
          * 6：信息审核被拒绝，请再次提交身份证照片，真实姓名，银行卡号，银行卡照片
          * */
         this.status = res.data.data.status // 获取状态
-        this.orderId = res.data.data.id // 订单ID
-        this.referrerId = res.data.data.referrerId
-        this.sellerId = res.data.data.sellerId
       })
     },
     handleSubmit() {
       this.loading = true
       setPersonalInfo(this.orderForm.realName, this.orderForm.idCardNumber, this.orderForm.idCardUrl, this.orderForm.bankCardNumber, this.orderForm.bankCardUrl).then(res => {
         this.loading = false
+        Bus.$emit('status4', res.data.code)
       })
     }
   },

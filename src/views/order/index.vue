@@ -88,10 +88,10 @@ export default {
       loading: false,
       options: [{
         value: '2',
-        label: '推广员'
+        label: 'VIP'
       }, {
         value: '3',
-        label: '加盟商'
+        label: '合伙人'
       }],
       value: '',
       status: 0,

@@ -40,7 +40,7 @@ export default {
       },
       status: null,
       loading: false,
-      status1Info: '您正在申请成为加盟商/推广员',
+      status1Info: '您正在申请成为合伙人/VIP',
       status3Info: '您的申请被拒绝，请重新提交流水号'
     }
   },

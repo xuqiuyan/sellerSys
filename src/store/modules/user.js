@@ -51,9 +51,8 @@ const user = {
         })
       })
     },
-
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo2({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const sellerType = response.data.data
@@ -70,7 +69,13 @@ const user = {
         })
       })
     },
-
+    // 获取用户信息
+    GetInfo({ commit, state }) {
+      return new Promise(resolve => {
+        commit('SET_SELLERTYPE', 3)
+        resolve()
+      })
+    },
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {

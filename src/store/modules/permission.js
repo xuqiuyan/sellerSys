@@ -8,7 +8,6 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
 function hasPermission(sellerType, route) {
   if (route.meta && route.meta.sellerType) {
     const ret = route.meta.sellerType.indexOf(sellerType) >= 0
-    console.log(route.meta.sellerType, sellerType, ret)
     return ret
   } else {
     return true
@@ -49,7 +48,6 @@ const permission = {
       return new Promise(resolve => {
         const sellerType = data
         const accessedRouters = filterAsyncRouter(asyncRouterMap, sellerType)
-        console.log(accessedRouters)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

@@ -72,13 +72,13 @@ export const asyncRouterMap = [
   {
     path: '/setReward',
     component: Layout,
-    meta: { title: '奖项设置', icon: 'activity', sellerType: [2] },
+    meta: { title: '奖项设置', icon: 'huodong', sellerType: [3] },
     children: [
       {
         path: 'index',
         name: 'setReward',
         component: () => import('@/views/setReward/index'),
-        meta: { title: '奖项设置', sellerType: [2] }
+        meta: { title: '奖项设置', icon: 'huodong', sellerType: [3] }
       }
     ]
   },
@@ -116,7 +116,7 @@ export const asyncRouterMap = [
         path: 'salesManList',
         name: 'salesManList',
         component: () => import('@/views/distribution/salesManList'),
-        meta: { title: '推广员管理', sellerType: [2] }
+        meta: { title: 'vip管理', sellerType: [2] }
       },
       {
         path: 'channelsList',
@@ -135,13 +135,13 @@ export const asyncRouterMap = [
   {
     path: '/bonuses',
     component: Layout,
-    meta: { title: '我的分润', icon: 'activity' },
+    meta: { title: '我的分润', icon: 'shouyi', sellerType: [2] },
     children: [
       {
         path: 'index',
         name: 'bonuses',
         component: () => import('@/views/bonuses/index'),
-        meta: { title: '我的分润' }
+        meta: { title: '我的分润', icon: 'shouyi', sellerType: [2] }
       }
     ]
   }

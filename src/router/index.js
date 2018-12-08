@@ -70,15 +70,29 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/setReward',
+    path: '/award',
     component: Layout,
-    meta: { title: '奖项设置', icon: 'huodong', sellerType: [3] },
+    meta: { title: '抽奖管理', icon: 'huodong', sellerType: [3] },
     children: [
       {
         path: 'index',
-        name: 'setReward',
-        component: () => import('@/views/setReward/index'),
-        meta: { title: '奖项设置', icon: 'huodong', sellerType: [3] }
+        name: 'allAward',
+        component: () => import('@/views/award/index'),
+        meta: { title: '所有抽奖', sellerType: [3] }
+      },
+      {
+        path: 'setStage',
+        name: 'setStage',
+        component: () => import('@/views/award/setStage'),
+        meta: { title: '阶段设置', sellerType: [3] },
+        hidden: true
+      },
+      {
+        path: 'setAward',
+        name: 'setAward',
+        component: () => import('@/views/award/setAward'),
+        meta: { title: '奖项设置', sellerType: [3] },
+        hidden: true
       }
     ]
   },

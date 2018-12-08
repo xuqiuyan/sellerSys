@@ -20,7 +20,8 @@ import '@/permission' // permission control
 import * as filters from './filters' // global filters
 import moment from 'moment'
 import VueMomentJS from 'vue-momentjs'
-
+import VueQriously from 'vue-qriously'
+Vue.use(VueQriously)
 Vue.use(VueMomentJS, moment)
 Vue.use(ElementUI, {
   size: 'medium', // set element-ui default size

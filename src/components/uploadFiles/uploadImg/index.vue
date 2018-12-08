@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="uploadImgBlock" align="center">
+    <div id="uploadImgBlock" align="center" >
       <el-button type="primary" size="small">点击上传</el-button>
       <input type="file" @change="selectImg" ref="imgfile">
     </div>
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       options: {
-        Bucket: 'seller-1255515741',
+        Bucket: 'lottery-1255515741',
         Region: 'ap-shanghai'
       },
       cos: '',
@@ -71,6 +71,7 @@ export default {
       setUrl: 'SET_URL'
     }),
     uploadFile() {
+      console.log('this.imgUrl' + this.imgUrl)
       this.cos.sliceUploadFile({
         Bucket: this.options.Bucket,
         Region: this.options.Region,
@@ -79,6 +80,7 @@ export default {
       }, (err, data) => {
         if (data) {
           this.imgUrl = 'https://' + data.Location
+          this.$message.success('图片上传成功！')
           Bus.$emit(this.imgfoulder, this.imgUrl) // 发射 this.imgfoulder 事件，返回图片路径
         } else {
           this.msg = err
